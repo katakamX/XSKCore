@@ -6,35 +6,29 @@ import com.xskbdakfnb.xskcore.commands.RegisterCommand;
 import com.xskbdakfnb.xskcore.listeners.AuthListener;
 import com.xskbdakfnb.xskcore.listeners.PlayerDeathListener;
 import com.xskbdakfnb.xskcore.listeners.PlayerJoinListener;
+import com.xskbdakfnb.xskcore.managers.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 
 public final class XSKCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
 
-        // Create plugin data folder
         File dataFolder = getDataFolder();
 
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
 
-        // Create players.yml if it doesn't exist
-        File playersFile = new File(dataFolder, "players.yml");
+        FileManager.initialize(this);
 
-        if (!playersFile.exists()) {
-            try {
-                playersFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        getLogger().info("Calling FileManager.loadPlayers()");
 
-        // Register event listeners
+        FileManager.loadPlayers();
+
+        // Register listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new AuthListener(), this);
