@@ -2,11 +2,15 @@ package com.xskbdakfnb.xskcore.listeners;
 
 import com.xskbdakfnb.xskcore.managers.AuthManager;
 import com.xskbdakfnb.xskcore.managers.PlayerDataManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -87,7 +91,52 @@ public class AuthListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
 
-        if (!(event.getEntity() instanceof org.bukkit.entity.Player player)) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        if (AuthManager.isLoggedIn(player.getUniqueId())) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+
+        if (AuthManager.isLoggedIn(player.getUniqueId())) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+
+        if (AuthManager.isLoggedIn(player.getUniqueId())) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+
+        if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
 
