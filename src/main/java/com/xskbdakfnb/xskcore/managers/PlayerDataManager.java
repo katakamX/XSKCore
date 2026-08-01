@@ -1,7 +1,11 @@
 package com.xskbdakfnb.xskcore.managers;
 
 import com.xskbdakfnb.xskcore.data.PlayerData;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -25,8 +29,20 @@ public class PlayerDataManager {
         return playerData;
     }
 
-    public static void clear() {
-        playerData.clear();
+    public static void savePlayer(UUID uuid, String password) {
+
+        File file = new File("plugins/XSKCore/players.yml");
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        config.set("players." + uuid + ".password", password);
+
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

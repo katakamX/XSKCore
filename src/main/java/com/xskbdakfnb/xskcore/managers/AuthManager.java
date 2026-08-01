@@ -1,5 +1,6 @@
 package com.xskbdakfnb.xskcore.managers;
 
+import com.xskbdakfnb.xskcore.data.PlayerData;
 import com.xskbdakfnb.xskcore.utils.HashUtils;
 
 import java.util.UUID;
@@ -26,14 +27,36 @@ public class AuthManager {
             return false;
         }
 
-        // Hash the password entered by the player
-        String hashedPassword = HashUtils.hashPassword(password);
+        PlayerData playerData = PlayerDataManager.getPlayerData(uuid);
+        String storedPassword = playerData.getPassword();
 
-        if (!PlayerDataManager.getPlayerData(uuid).getPassword().equals(hashedPassword)) {
-            return false;
+        // New account (already hashed)
+        if (storedPassword.length() == 64) {
+
+            String hashedPassword = HashUtils.hashPassword(password);
+
+            if (!storedPassword.equals(hashedPassword)) {
+                return false;
+            }
+
+        }
+        // Old account (plain text)
+        else {
+
+            if (!storedPassword.equals(password)) {
+                return false;
+            }
+
+            // Migrate to SHA-256
+            String hashedPassword = HashUtils.hashPassword(password);
+
+            playerData.setPassword(hashedPassword);
+
+            FileManager.savePlayer(uuid, hashedPassword);
+
         }
 
-        PlayerDataManager.getPlayerData(uuid).setLoggedIn(true);
+        playerData.setLoggedIn(true);
 
         return true;
     }

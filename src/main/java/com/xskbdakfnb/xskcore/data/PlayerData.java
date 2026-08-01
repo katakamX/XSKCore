@@ -14,6 +14,10 @@ public class PlayerData {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -21,4 +25,5 @@ public class PlayerData {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
 }
