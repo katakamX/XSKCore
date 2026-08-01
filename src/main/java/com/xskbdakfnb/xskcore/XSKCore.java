@@ -6,10 +6,10 @@ import com.xskbdakfnb.xskcore.commands.RegisterCommand;
 import com.xskbdakfnb.xskcore.listeners.AuthListener;
 import com.xskbdakfnb.xskcore.listeners.PlayerDeathListener;
 import com.xskbdakfnb.xskcore.listeners.PlayerJoinListener;
+import com.xskbdakfnb.xskcore.managers.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 
 public final class XSKCore extends JavaPlugin {
 
@@ -23,18 +23,10 @@ public final class XSKCore extends JavaPlugin {
             dataFolder.mkdirs();
         }
 
-        // Create players.yml if it doesn't exist
-        File playersFile = new File(dataFolder, "players.yml");
+        // Initialize FileManager AFTER data folder exists
+        FileManager.initialize(this);
 
-        if (!playersFile.exists()) {
-            try {
-                playersFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Register event listeners
+        // Register listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new AuthListener(), this);
@@ -56,4 +48,5 @@ public final class XSKCore extends JavaPlugin {
         getLogger().info("XSKCore Disabled!");
 
     }
+
 }

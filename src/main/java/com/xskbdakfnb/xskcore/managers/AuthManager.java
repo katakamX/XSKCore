@@ -11,6 +11,10 @@ public class AuthManager {
         }
 
         PlayerDataManager.register(uuid, password);
+
+        // Save to players.yml
+        PlayerDataManager.savePlayer(uuid, password);
+
         return true;
     }
 

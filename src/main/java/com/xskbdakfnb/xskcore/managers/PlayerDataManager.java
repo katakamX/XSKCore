@@ -25,4 +25,8 @@ public class PlayerDataManager {
         return playerData;
     }
 
+    public static void clear() {
+        playerData.clear();
+    }
+
 }
