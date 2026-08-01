@@ -1,5 +1,7 @@
 package com.xskbdakfnb.xskcore.managers;
 
+import com.xskbdakfnb.xskcore.utils.HashUtils;
+
 import java.util.UUID;
 
 public class AuthManager {
@@ -12,7 +14,7 @@ public class AuthManager {
 
         PlayerDataManager.register(uuid, password);
 
-        // Save player to players.yml
+        // Save hashed password to players.yml
         FileManager.savePlayer(uuid, password);
 
         return true;
@@ -24,7 +26,10 @@ public class AuthManager {
             return false;
         }
 
-        if (!PlayerDataManager.getPlayerData(uuid).getPassword().equals(password)) {
+        // Hash the password entered by the player
+        String hashedPassword = HashUtils.hashPassword(password);
+
+        if (!PlayerDataManager.getPlayerData(uuid).getPassword().equals(hashedPassword)) {
             return false;
         }
 
