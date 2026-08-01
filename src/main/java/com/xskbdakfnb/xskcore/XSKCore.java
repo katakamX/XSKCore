@@ -16,15 +16,17 @@ public final class XSKCore extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        // Create plugin data folder
         File dataFolder = getDataFolder();
 
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
 
-        // Initialize FileManager AFTER data folder exists
         FileManager.initialize(this);
+
+        getLogger().info("Calling FileManager.loadPlayers()");
+
+        FileManager.loadPlayers();
 
         // Register listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -48,5 +50,4 @@ public final class XSKCore extends JavaPlugin {
         getLogger().info("XSKCore Disabled!");
 
     }
-
 }
