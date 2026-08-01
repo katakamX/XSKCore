@@ -2,9 +2,9 @@ package com.xskbdakfnb.xskcore.listeners;
 
 import com.xskbdakfnb.xskcore.managers.AuthManager;
 import com.xskbdakfnb.xskcore.managers.PlayerDataManager;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -46,6 +46,17 @@ public class AuthListener implements Listener {
             event.setTo(event.getFrom());
 
         }
+
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+
+        if (AuthManager.isLoggedIn(event.getPlayer().getUniqueId())) {
+            return;
+        }
+
+        event.setCancelled(true);
 
     }
 
