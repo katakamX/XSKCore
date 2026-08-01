@@ -1,6 +1,7 @@
 package com.xskbdakfnb.xskcore.commands;
 
 import com.xskbdakfnb.xskcore.managers.AuthManager;
+import com.xskbdakfnb.xskcore.utils.HashUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +27,10 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        if (AuthManager.register(player.getUniqueId(), args[0])) {
+        // Hash the password before saving it
+        String hashedPassword = HashUtils.hashPassword(args[0]);
+
+        if (AuthManager.register(player.getUniqueId(), hashedPassword)) {
             player.sendMessage("§aRegistration successful!");
             player.sendMessage("§eNow use /login <password>");
         } else {
